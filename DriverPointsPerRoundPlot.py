@@ -54,7 +54,6 @@ import json
 #             # print(f'{driver} - {points}')
 #     rounds.append(dict(points))
 
-
 # Write the contents of the rounds data to a .json file
 # with open('/Users/emiran/MyDocuments/newTrialTracksider/rounds_data.json', 'w') as file:
 #     json.dump(rounds, file)
