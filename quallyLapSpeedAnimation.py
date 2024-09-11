@@ -19,7 +19,7 @@ plot_setup = {
 session = ff1.get_session(plot_setup['session_year'], plot_setup['session_round'], plot_setup['sesssion_type'])
 session.load()
 
-ff1.plotting.setup_mpl(mpl_timedelta_support=True, )
+ff1.plotting.setup_mpl(mpl_timedelta_support=True)
 
 driver1_fast_lap = session.laps.pick_driver(plot_setup['driver1_num']).pick_fastest()
 driver2_fast_lap = session.laps.pick_driver(plot_setup['driver2_num']).pick_fastest()
@@ -58,8 +58,8 @@ def animate(i):
     line2.set_data(driver2_time_array[:i], driver2_speed_array[:i])
     return line1, line2
 
-anim = FuncAnimation(fig, animate, frames=len(driver1_speed_array), interval=100, blit=True)
+anim = FuncAnimation(fig, animate, frames=len(driver2_speed_array), interval=200, blit=True)
 
 plt.legend(fontsize=18)
 plt.tight_layout()
-anim.save('fastlap_animation.mp4', writer='ffmpeg', fps=30)
+anim.save('fastlap_animation.mp4', writer='ffmpeg', fps=24)
