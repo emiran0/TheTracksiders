@@ -7,13 +7,13 @@ import matplotlib.dates as mdates
 from fastf1 import plotting
 
 plot_setup = {
-    'driver1': 'LEC',
-    'driver1_num': '16',
+    'driver1': 'NOR',
+    'driver1_num': '4',
     'driver2': 'SAI',
     'driver2_num': '55',
-    'session_year': 2023,
+    'session_year': 2024,
     'sesssion_type': 'Q',
-    'session_round': 'Baku'   
+    'session_round': 'Monza'   
 }
 
 session = ff1.get_session(plot_setup['session_year'], plot_setup['session_round'], plot_setup['sesssion_type'])
@@ -46,11 +46,11 @@ driver2_time_array = driver2_fastlap_telemetry['Time'].dt.total_seconds().to_num
 print(driver2_time_array.shape)
 
 data_points = driver1_time_array.shape[0]
-total_frames = 30 * 102
-x_interp = np.interp(np.linspace(0, data_points-1, total_frames), np.arange(data_points), driver1_time_array)
-y1_interp = np.interp(np.linspace(0, data_points-1, total_frames), np.arange(data_points), driver1_speed_array)
+total_frames = 30 * 79
+x_interp = np.interp(np.linspace(0, data_points, total_frames), np.arange(data_points), driver1_time_array)
+y1_interp = np.interp(np.linspace(0, data_points, total_frames), np.arange(data_points), driver1_speed_array)
 
-ax.set_xlim(driver1_time_array.min(), driver2_time_array.max() + 4)
+ax.set_xlim(driver1_time_array.min(), driver2_time_array.max() + 2)
 ax.set_ylim(50, driver1_fastlap_telemetry['Speed'].max()+10)
 
 ax.set_xlabel('Time (s)', fontsize=20, fontweight='bold')
