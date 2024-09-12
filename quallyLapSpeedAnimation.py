@@ -5,15 +5,16 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 import matplotlib.dates as mdates
 from fastf1 import plotting
+import os
 
 plot_setup = {
-    'driver1': 'NOR',
-    'driver1_num': '4',
+    'driver1': 'BOT',
+    'driver1_num': '77',
     'driver2': 'SAI',
     'driver2_num': '55',
-    'session_year': 2024,
+    'session_year': 2019,
     'sesssion_type': 'Q',
-    'session_round': 'Monza'   
+    'session_round': 'Baku'   
 }
 
 session = ff1.get_session(plot_setup['session_year'], plot_setup['session_round'], plot_setup['sesssion_type'])
@@ -65,7 +66,15 @@ def animate(i):
 
 anim = FuncAnimation(fig, animate, frames=total_frames, interval=1000/30, blit=True)
 
+
 plt.legend(fontsize=20)
 plt.tight_layout()
 # plt.show()
-anim.save('fastlap_animation.mp4', writer='ffmpeg', fps=30)
+
+output_dir = os.path.join('data', plot_setup['session_round'])
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
+file_path = 'data/' + plot_setup['session_round'] + '/' + str(plot_setup['session_year']) + '_' + plot_setup['session_round'] + '_' + plot_setup['sesssion_type'] + '_' + plot_setup['driver1'] +  '_fastlap_animation.mp4'
+
+anim.save(filename=file_path, writer='ffmpeg', fps=30)
