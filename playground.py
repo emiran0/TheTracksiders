@@ -10,12 +10,12 @@ import numpy as np
 # ff1.Cache.offline_mode(enabled=True)
 
 # for year in range(2018,2023):
-session = ff1.get_session(2023, 'Baku', 'R')
+session = ff1.get_session(2024, 'Baku', 'FP1')
 session.load(laps=True)
-results = session.results
-result_print = results.loc[:,['DriverNumber','TeamName', 'Points']]
+results = session.laps.get_drivers('44').pick_fastest()
+print(results)
 
-result_print.to_csv('/Users/emiran/MyDocuments/The Tracksiders Gen/data/Azerbaijan/results.csv', index=False)
+# result_print.to_csv('/Users/emiran/MyDocuments/The Tracksiders Gen/data/Azerbaijan/results.csv', index=False)
 
 # driver1_laps = session.laps.pick_drivers('PIA')
 # driver2_laps = session.laps.pick_drivers('LEC')
