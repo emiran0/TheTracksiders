@@ -32,7 +32,8 @@ def fetch_compund_data(driver_number, session_key='latest'):
 # lap_numbers_driver1, lap_durations_driver1 = fetch_lap_data(driver_number=11)
 # print(lap_numbers_driver1)
 driver_num = 44
-drivers = [1,3,4,16,44,55,81,14,63,50,27,18,77,22,43,23,10,24,31,11]
+# drivers = [1,3,4,16,44,55,81,14,63,50,27,18,77,22,43,23,10,24,31,11]
+drivers = [81, 16]
 total_medium_compound_count = 0
 for num in drivers:
     try:

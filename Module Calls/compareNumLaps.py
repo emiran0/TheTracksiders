@@ -13,10 +13,10 @@ plot_setup = {
     'driver1_num': '81',
     'driver2_num': '16',
     'session_year': 2024,
-    'session_round': 16,
+    'session_round': 'Baku',
     'session_type': 'R',
     'lap_slice_start': 40,
-    'lap_slice_end': 53
+    'lap_slice_end': 51
 }
 
 lap_range = range(plot_setup['lap_slice_start'], (plot_setup['lap_slice_end'] + 1))
