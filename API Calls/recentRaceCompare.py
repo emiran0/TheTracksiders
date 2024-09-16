@@ -22,17 +22,19 @@ driver1_laps = fetch_lap_data(81)
 driver2_laps = fetch_lap_data(16)
 
 # Filter out laps with duration higher than 120 seconds
-# driver1_laps = driver1_laps[driver1_laps['lap_duration'] <= 150]
-# driver2_laps = driver2_laps[driver2_laps['lap_duration'] <= 150]
+driver1_laps = driver1_laps[driver1_laps['lap_number'] >= 40]
+driver2_laps = driver2_laps[driver2_laps['lap_number'] >= 40]
 
 print(driver1_laps)
 
 # Compare the lap durations of the two drivers using a bar plot
 bar_width = 0.35
-index = np.arange(len(driver1_laps))
+# index = np.arange(len(driver1_laps))
+index = driver1_laps['lap_number']
+plt.style.use('dark_background')
 
-plt.bar(index, driver1_laps['lap_duration'], bar_width, label='Driver 1')
-plt.bar(index + bar_width, driver2_laps['lap_duration'], bar_width, label='Driver 2')
+plt.bar(index, driver1_laps['lap_duration'], bar_width, label='Driver 1', color='orange')
+plt.bar(index + bar_width, driver2_laps['lap_duration'], bar_width, label='Driver 2', color='red')
 
 # Calculate average lap durations
 avg_driver1 = driver1_laps['lap_duration'].mean()

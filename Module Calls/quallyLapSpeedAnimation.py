@@ -8,11 +8,11 @@ from fastf1 import plotting
 import os
 
 plot_setup = {
-    'driver1': 'BOT',
-    'driver1_num': '77',
-    'driver2': 'SAI',
-    'driver2_num': '55',
-    'session_year': 2019,
+    'driver1': 'LEC',
+    'driver1_num': '16',
+    'driver2': 'PIA',
+    'driver2_num': '81',
+    'session_year': 2024,
     'sesssion_type': 'Q',
     'session_round': 'Baku'   
 }
@@ -33,35 +33,37 @@ driver1_style = plotting.get_driver_style(identifier=plot_setup['driver1'], styl
 
 plt.rc('ytick', labelsize=16)
 plt.rc('xtick', labelsize=16)
-fig, ax = plt.subplots(figsize=(16, 9))
+fig, ax = plt.subplots(figsize=(16, 5))
 
 line1, = ax.plot([], [], **driver1_style, label=plot_setup['driver1'], linewidth=3)
 # line2, = ax.plot([], [], color=(255/255, 255/255, 0/255, 1.0), label=plot_setup['driver2'], linewidth=3)
 
-driver1_speed_array = driver1_fastlap_telemetry['Speed'].to_numpy()
+driver1_speed_array = driver1_fastlap_telemetry['Throttle'].to_numpy()
 driver1_time_array = driver1_fastlap_telemetry['Time'].dt.total_seconds().to_numpy()
 print(driver1_time_array.shape)
 
-driver2_speed_array = driver2_fastlap_telemetry['Speed'].to_numpy()
+driver2_speed_array = driver2_fastlap_telemetry['Brake'].to_numpy()
 driver2_time_array = driver2_fastlap_telemetry['Time'].dt.total_seconds().to_numpy()
 print(driver2_time_array.shape)
 
-data_points = driver1_time_array.shape[0]
-total_frames = 30 * 79
-x_interp = np.interp(np.linspace(0, data_points, total_frames), np.arange(data_points), driver1_time_array)
-y1_interp = np.interp(np.linspace(0, data_points, total_frames), np.arange(data_points), driver1_speed_array)
+data_points_1 = driver1_time_array.shape[0]
+data_points_2 = driver2_time_array.shape[0]
+total_frames = 30 * 102
+x_interp = np.interp(np.linspace(0, data_points_1, total_frames), np.arange(data_points_1), driver1_time_array)
+y1_interp = np.interp(np.linspace(0, data_points_1, total_frames), np.arange(data_points_1), driver1_speed_array)
 
-ax.set_xlim(driver1_time_array.min(), driver2_time_array.max() + 2)
-ax.set_ylim(50, driver1_fastlap_telemetry['Speed'].max()+10)
+x2_interp = np.interp(np.linspace(0, data_points_2, total_frames), np.arange(data_points_2), driver2_time_array)
+y2_interp = np.interp(np.linspace(0, data_points_2, total_frames), np.arange(data_points_2), driver2_speed_array)
+
+ax.set_xlim(driver1_time_array.min(), driver2_time_array.max())
+ax.set_ylim(0, driver1_fastlap_telemetry['Throttle'].max() + 1)
 
 ax.set_xlabel('Time (s)', fontsize=20, fontweight='bold')
-ax.set_ylabel('Speed (km/h)', fontsize=20, fontweight='bold')
-
-# print(time_array)
+ax.set_ylabel('Throttle %', fontsize=20, fontweight='bold')
 
 def animate(i):
     line1.set_data(x_interp[:i], y1_interp[:i])
-    # line2.set_data(driver2_time_array[:i], driver2_speed_array[:i])
+    # line2.set_data(x2_interp[:i], y2_interp[:i])
     return line1,
 
 anim = FuncAnimation(fig, animate, frames=total_frames, interval=1000/30, blit=True)
@@ -75,6 +77,6 @@ output_dir = os.path.join('data', plot_setup['session_round'])
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-file_path = 'data/' + plot_setup['session_round'] + '/' + str(plot_setup['session_year']) + '_' + plot_setup['session_round'] + '_' + plot_setup['sesssion_type'] + '_' + plot_setup['driver1'] +  '_fastlap_animation.mp4'
+file_path = 'data/' + plot_setup['session_round'] + '/' + str(plot_setup['session_year']) + '_' + plot_setup['session_round'] + '_' + plot_setup['sesssion_type'] + '_' + plot_setup['driver1'] +  '_fastlap_throttle_telemetry.mp4'
 
 anim.save(filename=file_path, writer='ffmpeg', fps=30)
